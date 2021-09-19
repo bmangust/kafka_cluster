@@ -1,0 +1,61 @@
+version: '3'
+
+services:
+  zookeeper:
+    image: 'bitnami/zookeeper:latest'
+    ports:
+     - '${ZOOKEEPER_PORT?ZOOKEEPER_PORT is not set}:2181'
+    environment:
+     - ALLOW_ANONYMOUS_LOGIN=yes
+    container_name: zookeeper
+  kafka1:
+    image: 'bitnami/kafka:latest'
+    ports:
+      - '${KAFKA1_PORT?KAFKA1_PORT is not set}:9093'
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=CLIENT://0.0.0.0:9092,EXTERNAL://0.0.0.0:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=CLIENT://kafka1:9092,EXTERNAL://localhost:${KAFKA1_PORT}
+      - KAFKA_INTER_BROKER_LISTENER_NAME=CLIENT
+    volumes:
+      - ${KAFKA_LOG_PATH?KAFKA_LOG_PATH is not set}/data/log1:/bitnami/kafka
+    container_name: kafka1
+    depends_on: 
+      - zookeeper
+    restart: always
+  kafka2:
+    image: 'bitnami/kafka:latest'
+    ports:
+      - '${KAFKA2_PORT?KAFKA2_PORT is not set}:9093'
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=CLIENT://0.0.0.0:9092,EXTERNAL://0.0.0.0:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=CLIENT://kafka2:9092,EXTERNAL://localhost:${KAFKA2_PORT}
+      - KAFKA_INTER_BROKER_LISTENER_NAME=CLIENT
+    volumes:
+      - ${KAFKA_LOG_PATH}/data/log2:/bitnami/kafka
+    container_name: kafka2
+    depends_on: 
+      - zookeeper
+    restart: always
+  kafka3:
+    image: 'bitnami/kafka:latest'
+    ports:
+      - '${KAFKA3_PORT?KAFKA3_PORT is not set}:9093'
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=CLIENT://0.0.0.0:9092,EXTERNAL://0.0.0.0:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=CLIENT://kafka3:9092,EXTERNAL://localhost:${KAFKA3_PORT}
+      - KAFKA_INTER_BROKER_LISTENER_NAME=CLIENT
+    volumes:
+      - ${KAFKA_LOG_PATH}/data/log3:/bitnami/kafka
+    container_name: kafka3
+    depends_on: 
+      - zookeeper
+    restart: always
