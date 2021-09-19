@@ -25,6 +25,7 @@ Check server and zookeeper properties in **config** folder. You can update **dat
 curl -#L https://apache-mirror.rbc.ru/pub/apache/kafka/2.8.0/kafka_2.13-2.8.0.tgz > kafka_2.13-2.8.0.tgz
 tar -xf kafka_2.13-2.8.0.tgz
 cd kafka_2.13-2.8.0
+cp ../config/* config/
 bin/zookeeper-server-start.sh -daemon config/zookeeper.properties
 bin/kafka-server-start.sh -daemon config/server1.properties
 bin/kafka-server-start.sh -daemon config/server2.properties
