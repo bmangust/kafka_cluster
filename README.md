@@ -13,6 +13,12 @@ See **.env-example** for mandatory variables
 ## install **make** if needed
 You can use **docker-compose** commands instead of **make**. See **Makefile** for reference.
 
+## create **data** folder
+You need to create a folder to store some kafka data. I've chosen to store it in current folder. Also, *bitnami* kafka images are non-root, so you need to make sure that kafka user (1001) will have all the nessesery privelegies.
+```
+mkdir data
+chmod 777 data
+```
 
 ## build and run cluster
 ```
